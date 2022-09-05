@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.dto.UserDto;
+import com.bridgelabz.exception.UserNotFoundException;
 import com.bridgelabz.service.IUserService;
 import com.bridgelabz.utility.Response;
 
-@RestController //@Controller + @Response Body
+@RestController // @Controller + @Response Body
 @RequestMapping("/home")
 public class Controller {
 
@@ -32,35 +33,35 @@ public class Controller {
 	}
 
 	@PostMapping("/post")
-	public ResponseEntity<Response> addUser(@RequestBody UserDto userDto) {
+	public ResponseEntity<Response> addUser(@RequestBody UserDto userDto) throws UserNotFoundException {
 		ResponseEntity<Response> response = new ResponseEntity<Response>(userService.addUser(userDto), HttpStatus.OK);
 		return response;
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Response> deleteUser(@PathVariable Integer id) {
+	public ResponseEntity<Response> deleteUser(@PathVariable Integer id) throws UserNotFoundException {
 		ResponseEntity<Response> response = new ResponseEntity<Response>(userService.deleteUser(id), HttpStatus.OK);
 		return response;
-		
+
 	}
 
 	@PutMapping("/put/{id}")
 	public ResponseEntity<Response> updateUser(@PathVariable Integer id, @RequestBody UserDto userDto) {
-		ResponseEntity<Response> response = new ResponseEntity<Response>(userService.updateUser(id, userDto), HttpStatus.OK);
+		ResponseEntity<Response> response = new ResponseEntity<Response>(userService.updateUser(id, userDto),
+				HttpStatus.OK);
 		return response;
 	}
 
 	@GetMapping("/getdata")
 	public ResponseEntity<List<UserDto>> getList() {
-		List<UserDto> getdetails =userService.findAll();
+		List<UserDto> getdetails = userService.findAll();
 		return new ResponseEntity<List<UserDto>>(getdetails, HttpStatus.OK);
 	}
-	
 
 	@GetMapping("/getdatabyid")
-	public ResponseEntity<Response> getUserById1(@RequestParam int id) {
+	public ResponseEntity<Response> getUserById1(@RequestParam int id) throws UserNotFoundException {
 		ResponseEntity<Response> response = new ResponseEntity<Response>(userService.getById(id), HttpStatus.OK);
 		return response;
 	}
-	
+
 }
